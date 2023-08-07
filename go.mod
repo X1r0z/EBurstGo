@@ -1,6 +1,6 @@
 module EBurstGo
 
-go 1.20
+go 1.19
 
 require (
 	github.com/Azure/go-ntlmssp v0.0.0-20221128193559-754e69321358
