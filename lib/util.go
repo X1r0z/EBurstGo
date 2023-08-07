@@ -11,7 +11,7 @@ var ExchangeUrls = map[string]string{
 	"ews":          "/ews",
 	"mapi":         "/mapi",
 	"activesync":   "/Microsoft-Server-ActiveSync",
-	"oab":          "/oab",
+	"oab":          "/oab", // TODO
 	"rpc":          "/rpc",
 	"owa":          "/owa/auth.owa",
 	"powershell":   "/powershell",
@@ -43,3 +43,5 @@ var NtlmClient = &http.Client{
 		return http.ErrUseLastResponse
 	},
 }
+
+var Log *Logging

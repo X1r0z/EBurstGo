@@ -14,7 +14,7 @@
 /oab
 /rpc
 /Microsoft-Server-ActiveSync
-/powershell # 后期支持
+/powershell
 ```
 
 ## Usage
@@ -24,11 +24,15 @@ usage
 ```shell
 Usage of ./EBurstGo:
   -check
-    	检查目标 Exchange 服务器可用接口
+    	检查目标 Exchange 可用接口
+  -debug
+    	显示 Debug 信息
+  -delay int
+    	请求延时
   -domain string
     	AD 域名
   -mode string
-    	指定 Exchange 服务器接口
+    	指定 Exchange Web 接口
   -pass string
     	密码字典
   -thread int
@@ -37,6 +41,8 @@ Usage of ./EBurstGo:
     	Exchange 服务器地址
   -user string
     	用户名字典
+  -verbose
+    	显示详细信息
 ```
 
 check
@@ -66,6 +72,8 @@ $ ./EBurstGo -url https://192.168.30.11 -domain hack-my.com -user users.txt -pas
 [*] 耗时: 4.40084275s
 ```
 
-协程数不建议开太大, 可能会漏报 (待解决?)
-
-等后面有时间修一修 bug, 还有优化代码结构
+已知 bug:
+- 当协程数量过大时, 部分利用 NTLM 进行身份认证的接口可能出现漏报
+- 在使用 ActiveSync 接口进行爆破时, 如果凭据正确, 服务器会在大约 20s 之后响应, 期间会阻塞当前协程 (不过好像是 ActiveSync 本身的特性)
+- `/rpc` 和 `/oab` 接口存在问题, 待解决
+- `/powershell` 接口 (Kerberos 认证) 待支持
