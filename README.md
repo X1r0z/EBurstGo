@@ -24,7 +24,7 @@ usage
 ```shell
 Usage of ./EBurstGo:
   -check
-    	检查目标 Exchange 可用接口
+    	检测目标 Exchange 可用接口
   -debug
     	显示 Debug 信息
   -delay int
@@ -49,6 +49,7 @@ check
 
 ```shell
 $ ./EBurstGo -url https://192.168.30.11 -check
+[*] 检测目标 Exchange 可用接口
 [+] 存在 owa 接口 (/owa/auth.owa), 可以爆破
 [+] 存在 powershell 接口 (/powershell), 可以爆破
 [+] 存在 ecp 接口 (/owa/auth.owa), 可以爆破

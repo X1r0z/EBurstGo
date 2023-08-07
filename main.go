@@ -24,7 +24,7 @@ func main() {
 	)
 	flag.StringVar(&targetUrl, "url", "", "Exchange 服务器地址")
 	flag.StringVar(&mode, "mode", "", "指定 Exchange Web 接口")
-	flag.BoolVar(&check, "check", false, "检查目标 Exchange 可用接口")
+	flag.BoolVar(&check, "check", false, "检测目标 Exchange 可用接口")
 	flag.StringVar(&domain, "domain", "", "AD 域名")
 	flag.StringVar(&user, "user", "", "用户名字典")
 	flag.StringVar(&pass, "pass", "", "密码字典")
