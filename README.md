@@ -43,15 +43,15 @@ check
 
 ```shell
 $ ./EBurstGo -url https://192.168.30.11 -check
-[-] 不存在 https://192.168.30.11/owa/auth.owa 接口
-[+] 存在 https://192.168.30.11/ews 接口, 可以爆破
-[+] 存在 https://192.168.30.11/mapi 接口, 可以爆破
-[+] 存在 https://192.168.30.11/oab 接口, 可以爆破
-[-] 不存在 https://192.168.30.11/owa/auth.owa 接口
-[+] 存在 https://192.168.30.11/powershell 接口, 可以爆破
-[+] 存在 https://192.168.30.11/autodiscover 接口, 可以爆破
-[+] 存在 https://192.168.30.11/Microsoft-Server-ActiveSync 接口, 可以爆破
-[+] 存在 https://192.168.30.11/rpc 接口, 可以爆破
+[+] 存在 owa 接口 (/owa/auth.owa), 可以爆破
+[+] 存在 powershell 接口 (/powershell), 可以爆破
+[+] 存在 ecp 接口 (/owa/auth.owa), 可以爆破
+[+] 存在 autodiscover 接口 (/autodiscover), 可以爆破
+[+] 存在 mapi 接口 (/mapi), 可以爆破
+[+] 存在 activesync 接口 (/Microsoft-Server-ActiveSync), 可以爆破
+[+] 存在 oab 接口 (/oab), 可以爆破
+[+] 存在 ews 接口 (/ews), 可以爆破
+[+] 存在 rpc 接口 (/rpc), 可以爆破
 ```
 
 brute

@@ -18,9 +18,9 @@ func BasicBruteWorker(u string, domain string, task chan []string) {
 		req.Header.Add("Connection", "close")
 		res, _ := Client.Do(req)
 		if res.StatusCode != 401 && res.StatusCode != 408 && res.StatusCode != 504 {
-			color.Green("[+] 成功 %v", username+":"+password)
+			color.Green("[+] 成功: %v", username+":"+password)
 		} else {
-			//color.Red("[-] 失败 %v", username+":"+password)
+			//color.Red("[-] 失败: %v", username+":"+password)
 		}
 	}
 }
@@ -29,7 +29,7 @@ func BasicBruteRun(targetUrl string, mode string, domain string, userDict []stri
 
 	authPath := ExchangeUrls[mode]
 	u, _ := url.JoinPath(targetUrl, authPath)
-	fmt.Println("[*] 使用", mode, "接口爆破", targetUrl)
+	fmt.Println("[*] 使用", mode, "接口爆破:", targetUrl)
 
 	task := make(chan []string, len(userDict)*len(passDict))
 
@@ -56,5 +56,5 @@ func BasicBruteRun(targetUrl string, mode string, domain string, userDict []stri
 	wg.Wait()
 
 	t2 := time.Now()
-	fmt.Println("[*] 耗时", t2.Sub(t1))
+	fmt.Println("[*] 耗时:", t2.Sub(t1))
 }
