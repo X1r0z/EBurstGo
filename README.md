@@ -2,7 +2,7 @@
 
 利用 Exchange 服务器 Web 接口爆破邮箱账户
 
-参考 [grayddq/EBurst](https://github.com/grayddq/EBurst) 项目利用 Go 语言进行重构
+参考 [grayddq/EBurst](https://github.com/grayddq/EBurst) 项目使用 Go 语言重构
 
 支持接口
 
