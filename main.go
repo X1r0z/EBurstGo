@@ -3,6 +3,7 @@ package main
 import (
 	"EBurstGo/lib"
 	"flag"
+	"github.com/fatih/color"
 	"io"
 	"os"
 	"strings"
@@ -23,6 +24,7 @@ func main() {
 		v         bool
 		delay     int
 		debug     bool
+		nocolor   bool
 	)
 	flag.StringVar(&targetUrl, "url", "", "Exchange 服务器地址")
 	flag.StringVar(&mode, "mode", "", "指定 Exchange Web 接口")
@@ -36,11 +38,16 @@ func main() {
 	flag.IntVar(&delay, "delay", 0, "请求延时")
 	flag.BoolVar(&v, "verbose", false, "显示详细信息")
 	flag.BoolVar(&debug, "debug", false, "显示 Debug 信息")
+	flag.BoolVar(&nocolor, "nocolor", false, "关闭输出颜色")
 	flag.Parse()
 
 	if len(os.Args) == 1 {
 		flag.Usage()
 		os.Exit(0)
+	}
+
+	if nocolor {
+		color.NoColor = true
 	}
 
 	lib.Log = &lib.Logging{Verbose: v, IsDebug: debug}
