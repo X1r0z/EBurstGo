@@ -2,7 +2,6 @@ package lib
 
 import (
 	"crypto/tls"
-	"github.com/Azure/go-ntlmssp"
 	"net/http"
 )
 
@@ -23,20 +22,6 @@ var Client = &http.Client{
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: true,
 			Renegotiation:      tls.RenegotiateOnceAsClient,
-		},
-	},
-	CheckRedirect: func(req *http.Request, via []*http.Request) error {
-		return http.ErrUseLastResponse
-	},
-}
-
-var NtlmClient = &http.Client{
-	Transport: ntlmssp.Negotiator{
-		RoundTripper: &http.Transport{
-			TLSClientConfig: &tls.Config{
-				InsecureSkipVerify: true,
-				Renegotiation:      tls.RenegotiateOnceAsClient,
-			},
 		},
 	},
 	CheckRedirect: func(req *http.Request, via []*http.Request) error {

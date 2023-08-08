@@ -74,7 +74,6 @@ $ ./EBurstGo -url https://192.168.30.11 -domain hack-my.com -user users.txt -pas
 ```
 
 已知 bug:
-- 当协程数量过大时, 部分利用 NTLM 进行身份认证的接口可能出现漏报
 - 在使用 ActiveSync 接口进行爆破时, 如果凭据正确, 服务器会在大约 20s 之后响应, 期间会阻塞当前协程 (不过好像是 ActiveSync 本身的特性)
-- `/rpc` 和 `/oab` 接口存在问题, 待解决
+- `/oab` 接口存在问题, 待解决
 - `/powershell` 接口 (Kerberos 认证) 待支持
