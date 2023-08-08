@@ -17,6 +17,8 @@ func main() {
 		domain    string
 		user      string
 		pass      string
+		userf     string
+		passf     string
 		n         int
 		v         bool
 		delay     int
@@ -26,8 +28,10 @@ func main() {
 	flag.StringVar(&mode, "mode", "", "指定 Exchange Web 接口")
 	flag.BoolVar(&check, "check", false, "检测目标 Exchange 可用接口")
 	flag.StringVar(&domain, "domain", "", "AD 域名")
-	flag.StringVar(&user, "user", "", "用户名字典")
-	flag.StringVar(&pass, "pass", "", "密码字典")
+	flag.StringVar(&user, "user", "", "指定用户名")
+	flag.StringVar(&pass, "pass", "", "指定密码")
+	flag.StringVar(&userf, "userf", "", "用户名字典")
+	flag.StringVar(&passf, "passf", "", "密码字典")
 	flag.IntVar(&n, "thread", 2, "协程数量")
 	flag.IntVar(&delay, "delay", 0, "请求延时")
 	flag.BoolVar(&v, "verbose", false, "显示详细信息")
@@ -50,19 +54,32 @@ func main() {
 		lib.Check(targetUrl)
 	} else {
 
-		userFp, _ := os.Open(user)
-		passFp, _ := os.Open(pass)
+		var userDict []string
+		var passDict []string
 
-		defer userFp.Close()
-		defer passFp.Close()
+		if user != "" {
+			userDict = []string{user}
+		}
 
-		userBytes, _ := io.ReadAll(userFp)
-		passBytes, _ := io.ReadAll(passFp)
+		if pass != "" {
+			passDict = []string{pass}
+		}
 
-		userDict := strings.Split(string(userBytes), "\n")
-		passDict := strings.Split(string(passBytes), "\n")
-		userDict = userDict[:len(userDict)-1]
-		passDict = passDict[:len(passDict)-1]
+		if userf != "" {
+			fp, _ := os.Open(userf)
+			defer fp.Close()
+			b, _ := io.ReadAll(fp)
+			userDict = strings.Split(string(b), "\n")
+			userDict = userDict[:len(userDict)-1]
+		}
+
+		if passf != "" {
+			fp, _ := os.Open(passf)
+			defer fp.Close()
+			b, _ := io.ReadAll(fp)
+			passDict = strings.Split(string(b), "\n")
+			passDict = passDict[:len(passDict)-1]
+		}
 
 		var worker lib.BruteWorker
 

@@ -22,6 +22,7 @@ func BruteRunner(targetUrl string, mode string, domain string, userDict []string
 	authPath := ExchangeUrls[mode]
 	u, _ := url.JoinPath(targetUrl, authPath)
 	Log.Info("[*] 使用 %v 接口爆破: %v", mode, targetUrl)
+	Log.Info("[*] 用户名:%v 密码:%v 共计:%v", len(userDict), len(passDict), len(userDict)*len(passDict))
 
 	task := make(chan []string, len(userDict)*len(passDict))
 
