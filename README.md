@@ -33,6 +33,8 @@ Usage of ./EBurstGo:
     	AD 域名
   -mode string
     	指定 Exchange Web 接口
+  -nocolor
+    	关闭输出颜色
   -pass string
     	指定密码
   -passf string
