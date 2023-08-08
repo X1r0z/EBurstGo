@@ -41,12 +41,13 @@ func main() {
 
 	lib.Log = &lib.Logging{Verbose: v, IsDebug: debug}
 
+	if targetUrl == "" {
+		lib.Log.Failed("[-] Exchange 服务器地址为空")
+		os.Exit(0)
+	}
+
 	if check {
-		if targetUrl != "" {
-			lib.Check(targetUrl)
-		} else {
-			lib.Log.Failed("[-] Exchange 服务器地址为空")
-		}
+		lib.Check(targetUrl)
 	} else {
 
 		userFp, _ := os.Open(user)
@@ -63,17 +64,22 @@ func main() {
 		userDict = userDict[:len(userDict)-1]
 		passDict = passDict[:len(passDict)-1]
 
+		var worker lib.BruteWorker
+
 		switch mode {
 		case "autodiscover", "ews", "mapi", "oab", "rpc":
-			lib.NtlmBruteRun(targetUrl, mode, domain, userDict, passDict, n, delay)
+			worker = lib.NtlmBruteWorker
 		case "activesync":
-			lib.BasicBruteRun(targetUrl, mode, domain, userDict, passDict, n, delay)
+			worker = lib.BasicBruteWorker
 		case "owa", "ecp":
-			lib.HttpBruteRun(targetUrl, mode, domain, userDict, passDict, n, delay)
+			worker = lib.HttpBruteWorker
 		case "powershell":
-			lib.KerberosBruteRun(targetUrl, mode, domain, userDict, passDict, n, delay)
+			worker = lib.KerberosBruteWorker
 		default:
 			lib.Log.Failed("[-] Exchange 接口无效")
+			os.Exit(0)
 		}
+
+		lib.BruteRunner(targetUrl, mode, domain, userDict, passDict, n, delay, worker)
 	}
 }
