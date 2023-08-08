@@ -30,9 +30,7 @@ func NtlmBruteWorker(info *TaskInfo) {
 		req.SetBasicAuth(info.domain+"\\"+username, password)
 		res, _ := client.Do(req)
 
-		if res.StatusCode == 403 {
-			Log.Failed("[*] 403 错误")
-		} else if res.StatusCode != 401 && res.StatusCode != 408 && res.StatusCode != 504 {
+		if res.StatusCode != 401 && res.StatusCode != 408 && res.StatusCode != 504 {
 			Log.Success("[+] 成功: %v", username+":"+password)
 		} else {
 			Log.Failed("[-] 失败: %v", username+":"+password)

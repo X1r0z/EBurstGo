@@ -80,6 +80,5 @@ $ ./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -pas
 [*] 耗时: 3.031753209s
 ```
 
-已知 bug:
-- `/oab` 接口存在问题, 待解决
+todo
 - `/powershell` 接口 (Kerberos 认证) 待支持

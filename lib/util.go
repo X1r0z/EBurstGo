@@ -10,7 +10,7 @@ var ExchangeUrls = map[string]string{
 	"ews":          "/ews",
 	"mapi":         "/mapi",
 	"activesync":   "/Microsoft-Server-ActiveSync",
-	"oab":          "/oab",
+	"oab":          "/oab/global.asax",
 	"rpc":          "/rpc",
 	"owa":          "/owa/auth.owa",
 	"powershell":   "/powershell",
