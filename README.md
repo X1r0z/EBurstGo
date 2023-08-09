@@ -81,4 +81,5 @@ $ ./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -pas
 ```
 
 todo
+- 开启代理爆破一段时间会出现 `connection refused`, 待解决
 - `/powershell` 接口 (Kerberos 认证) 待支持

