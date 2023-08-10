@@ -6,38 +6,7 @@ import (
 	"time"
 )
 
-type TaskInfo struct {
-	targetUrl string
-	mode      string
-	u         string
-	domain    string
-	task      chan []string
-	done      *DoneMap
-	delay     int
-}
-
-type DoneMap struct {
-	mu      sync.RWMutex
-	done    map[string]struct{}
-	allDone bool
-}
-
-func (c *DoneMap) Get(user string) bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	_, ok := c.done[user]
-	return ok
-}
-
-func (c *DoneMap) Set(user string) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-	c.done[user] = struct{}{}
-}
-
-type BruteWorker func(info *TaskInfo)
-
-func BruteRunner(targetUrl string, mode string, domain string, dict [][]string, n int, delay int, worker BruteWorker) {
+func BruteRunner(targetUrl string, mode string, domain string, dict [][]string, t int, delay int, proxy string, o string, worker BruteWorker) {
 
 	authPath := ExchangeUrls[mode]
 	u, _ := url.JoinPath(targetUrl, authPath)
@@ -46,7 +15,7 @@ func BruteRunner(targetUrl string, mode string, domain string, dict [][]string, 
 	t1 := time.Now()
 
 	task := make(chan []string, len(dict))
-	done := &DoneMap{done: make(map[string]struct{})}
+	done := &DoneMap{done: make(map[string]string)}
 
 	info := &TaskInfo{
 		targetUrl: targetUrl,
@@ -56,6 +25,8 @@ func BruteRunner(targetUrl string, mode string, domain string, dict [][]string, 
 		task:      task,
 		done:      done,
 		delay:     delay,
+		proxy:     proxy,
+		o:         o,
 	}
 
 	for _, data := range dict {
@@ -66,7 +37,7 @@ func BruteRunner(targetUrl string, mode string, domain string, dict [][]string, 
 
 	var wg sync.WaitGroup
 
-	for i := 0; i < n; i++ {
+	for i := 0; i < t; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()

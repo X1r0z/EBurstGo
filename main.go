@@ -22,11 +22,14 @@ func main() {
 		passf      string
 		userpassf  string
 		userAsPass bool
-		n          int
+		proxy      string
+		t          int
 		v          bool
 		delay      int
 		debug      bool
 		nocolor    bool
+		o          string
+		nosave     bool
 	)
 	flag.StringVar(&targetUrl, "url", "", "Exchange 服务器地址")
 	flag.StringVar(&mode, "mode", "", "指定 Exchange Web 接口")
@@ -38,9 +41,12 @@ func main() {
 	flag.StringVar(&passf, "passf", "", "密码字典")
 	flag.StringVar(&userpassf, "userpassf", "", "指定用户名密码字典 (user:pass)")
 	flag.BoolVar(&userAsPass, "user-as-pass", false, "指定密码与用户名相同")
-	flag.IntVar(&n, "thread", 2, "协程数量")
+	flag.StringVar(&proxy, "proxy", "", "指定 socks/http(s) 代理")
+	flag.StringVar(&o, "o", "result.txt", "指定结果输出文件")
+	flag.BoolVar(&nosave, "nosave", false, "不将结果输出至文件")
+	flag.IntVar(&t, "t", 2, "协程数量")
 	flag.IntVar(&delay, "delay", 0, "请求延时")
-	flag.BoolVar(&v, "verbose", false, "显示详细信息")
+	flag.BoolVar(&v, "v", false, "显示详细信息")
 	flag.BoolVar(&debug, "debug", false, "显示 Debug 信息")
 	flag.BoolVar(&nocolor, "nocolor", false, "关闭输出颜色")
 	flag.Parse()
@@ -52,6 +58,10 @@ func main() {
 
 	if nocolor {
 		color.NoColor = true
+	}
+
+	if nosave {
+		o = ""
 	}
 
 	lib.Log = &lib.Logging{Verbose: v, IsDebug: debug}
@@ -139,6 +149,6 @@ func main() {
 			return
 		}
 
-		lib.BruteRunner(targetUrl, mode, domain, dict, n, delay, worker)
+		lib.BruteRunner(targetUrl, mode, domain, dict, t, delay, proxy, o, worker)
 	}
 }

