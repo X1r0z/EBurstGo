@@ -17,6 +17,10 @@
 /powershell
 ```
 
+注意 Releases 中的代码不一定是最新的
+
+建议将本项目 clone 下来然后执行 `goreleaser build --snapshot` 手动编译
+
 ## Usage
 
 usage
