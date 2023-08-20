@@ -124,8 +124,7 @@ $ ./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -pas
 
 ## Todo
 
-- 开启代理使用 NTLM 认证爆破一段时间后出现 `connection refused`, 待解决
-  这个目前来说好像没有什么好的解决方法(?) 只能通过将协程数量调小 + 添加延时来避免
+- 开启代理使用 NTLM 认证爆破一段时间后出现 `connection refused`, 待解决 (这个目前来说好像没有什么好的解决方法(?) 只能通过将协程数量调小 + 添加延时来避免)
 
 - `/powershell` 接口 (Kerberos 认证) 待支持
 
