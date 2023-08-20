@@ -1,8 +1,8 @@
 package lib
 
 import (
-	"EBurstGo/lib/go-ntlmssp"
 	"crypto/tls"
+	"github.com/X1r0z/go-ntlmssp"
 	"net/http"
 	"net/url"
 	"time"

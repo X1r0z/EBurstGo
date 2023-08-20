@@ -1,5 +1,5 @@
-github.com/Azure/go-ntlmssp v0.0.0-20221128193559-754e69321358 h1:mFRzDkZVAjdal+s7s0MwaRv9igoPqLRdzOLzw/8Xvq8=
-github.com/Azure/go-ntlmssp v0.0.0-20221128193559-754e69321358/go.mod h1:chxPXzSsl7ZWRAuOIE23GDNzjWuZquvFlgA8xmpunjU=
+github.com/X1r0z/go-ntlmssp v0.0.0-20230820164352-b055faec90a0 h1:ZnS3FjskRE9kIrHVuLyjVCfxmH5mYK5+WKMcVMRJUV0=
+github.com/X1r0z/go-ntlmssp v0.0.0-20230820164352-b055faec90a0/go.mod h1:ewDgPDc10cTuV/2qiAUx3opFR2yEFNXv1QWAQoIbMtw=
 github.com/fatih/color v1.15.0 h1:kOqh6YHBtK8aywxGerMG2Eq3H6Qgoqeo13Bk2Mv/nBs=
 github.com/fatih/color v1.15.0/go.mod h1:0h5ZqXfHYED7Bhv2ZJamyIOUej9KtShiJESRwBDUSsw=
 github.com/mattn/go-colorable v0.1.13 h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=
