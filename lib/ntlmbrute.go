@@ -1,8 +1,8 @@
 package lib
 
 import (
+	"EBurstGo/lib/go-ntlmssp"
 	"crypto/tls"
-	"github.com/Azure/go-ntlmssp"
 	"net/http"
 	"net/url"
 	"time"
@@ -32,6 +32,7 @@ func NtlmBruteWorker(info *TaskInfo) {
 						}
 					},
 				},
+				UsePth: info.usePth,
 			},
 			CheckRedirect: func(req *http.Request, via []*http.Request) error {
 				return http.ErrUseLastResponse

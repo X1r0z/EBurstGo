@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func BruteRunner(targetUrl string, mode string, domain string, dict [][]string, t int, delay int, proxy string, o string, worker BruteWorker) {
+func BruteRunner(targetUrl string, mode string, domain string, dict [][]string, t int, delay int, proxy string, o string, usePth bool, worker BruteWorker) {
 
 	authPath := ExchangeUrls[mode]
 	u, _ := url.JoinPath(targetUrl, authPath)
@@ -27,6 +27,7 @@ func BruteRunner(targetUrl string, mode string, domain string, dict [][]string, 
 		delay:     delay,
 		proxy:     proxy,
 		o:         o,
+		usePth:    usePth,
 	}
 
 	for _, data := range dict {

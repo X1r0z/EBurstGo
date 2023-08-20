@@ -22,6 +22,7 @@ func main() {
 		passf      string
 		userpassf  string
 		userAsPass bool
+		usePth     bool
 		proxy      string
 		t          int
 		v          bool
@@ -41,6 +42,7 @@ func main() {
 	flag.StringVar(&passf, "passf", "", "密码字典")
 	flag.StringVar(&userpassf, "userpassf", "", "指定用户名密码字典 (user:pass)")
 	flag.BoolVar(&userAsPass, "user-as-pass", false, "指定密码与用户名相同")
+	flag.BoolVar(&usePth, "pth", false, "指定为 Pth 模式 (Pass The Hash)")
 	flag.StringVar(&proxy, "proxy", "", "指定 socks/http(s) 代理")
 	flag.StringVar(&o, "o", "result.txt", "指定结果输出文件")
 	flag.BoolVar(&nosave, "nosave", false, "不将结果输出至文件")
@@ -149,6 +151,6 @@ func main() {
 			return
 		}
 
-		lib.BruteRunner(targetUrl, mode, domain, dict, t, delay, proxy, o, worker)
+		lib.BruteRunner(targetUrl, mode, domain, dict, t, delay, proxy, o, usePth, worker)
 	}
 }

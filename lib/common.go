@@ -29,6 +29,7 @@ type TaskInfo struct {
 	delay     int
 	proxy     string
 	o         string
+	usePth    bool
 }
 
 type DoneMap struct {

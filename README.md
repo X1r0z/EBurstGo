@@ -49,6 +49,8 @@ Usage of ./EBurstGo:
     	密码字典
   -proxy string
     	指定 socks/http(s) 代理
+  -pth
+    	指定为 Pth 模式 (Pass The Hash)
   -t int
     	协程数量 (default 2)
   -url string
@@ -100,6 +102,9 @@ brute
 # 密码与用户名相同
 ./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -user-as-pass -mode ews
 
+# Pth 爆破 (pass.txt 为 NTLM Hash)
+./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -passf pass.txt -mode ews -pth
+
 # 设置 socks/http(s) 代理
 ./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -passf pass.txt -mode ews -socks socks5://127.0.0.1:1080
 ```
@@ -120,4 +125,5 @@ $ ./EBurstGo -url https://192.168.30.11 -domain hack-my.com -userf user.txt -pas
 ## Todo
 
 - 开启代理使用 NTLM 认证爆破一段时间后出现 `connection refused`, 待解决
+  这个目前来说好像没有什么好的解决方法(?) 只能通过将协程数量调小 + 添加延时来避免
 - `/powershell` 接口 (Kerberos 认证) 待支持
