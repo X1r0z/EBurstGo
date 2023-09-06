@@ -17,6 +17,7 @@ func Check(targetUrl string) {
 				TLSClientConfig: &tls.Config{
 					InsecureSkipVerify: true,
 					Renegotiation:      tls.RenegotiateOnceAsClient,
+					MinVersion:         tls.VersionTLS10,
 				},
 			},
 		}

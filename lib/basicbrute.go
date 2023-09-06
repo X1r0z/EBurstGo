@@ -21,6 +21,7 @@ func BasicBruteWorker(info *TaskInfo) {
 				TLSClientConfig: &tls.Config{
 					InsecureSkipVerify: true,
 					Renegotiation:      tls.RenegotiateOnceAsClient,
+					MinVersion:         tls.VersionTLS10,
 				},
 				Proxy: func(_ *http.Request) (*url.URL, error) {
 					if info.proxy != "" {
