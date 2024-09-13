@@ -1,5 +1,6 @@
 .DS_Store
 .idea/
+dist/
 EBurstGo
 user.txt
 pass.txt
@@ -7,4 +8,3 @@ rockyou.txt
 userpass.txt
 result.txt
 hash.txt
-dist/
